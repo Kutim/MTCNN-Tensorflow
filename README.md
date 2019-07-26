@@ -6,6 +6,7 @@ This work is used for reproduce MTCNN,a Joint Face Detection and Alignment using
 2. You should first download [WIDER Face](http://mmlab.ie.cuhk.edu.hk/projects/WIDERFace/) and [Celeba](http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html).**WIDER Face** for face detection and **Celeba** for landmark detection(This is required by original paper.But I found some labels were wrong in Celeba. So I use [this dataset](http://mmlab.ie.cuhk.edu.hk/archive/CNN_FacePoint.htm) for landmark detection).
 
 ## Dependencies
+* easydict
 * pillow
 * Tensorflow 1.2.1
 * TF-Slim
@@ -38,6 +39,9 @@ DATA/
 4. Run `gen_landmark_aug_12.py` to generate training data(Face Landmark Detection Part) for **PNet**.
 5. Run `gen_imglist_pnet.py` to merge two parts of training data.
 6. Run `gen_PNet_tfrecords.py` to generate tfrecord for **PNet**.
+
+get into `train_models ` ,train **PNet**
+
 ---
 7. After training **PNet**, run `gen_hard_example` to generate training data(Face Detection Part) for **RNet**.
 8. Run `gen_landmark_aug_24.py` to generate training data(Face Landmark Detection Part) for **RNet**.
