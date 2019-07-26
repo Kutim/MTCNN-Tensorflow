@@ -41,7 +41,7 @@ for annotation in annotations:
     #boxed change to float type
     bbox = list(map(float, annotation[1:]))
     #gt
-    boxes = np.array(bbox, dtype=np.float32).reshape(-1, 4)
+    boxes = np.array(bbox, dtype=np.float32).reshape(-1, 4)         # 获得图像中的标记个数，及相应的标记
     #load image
     img = cv2.imread(os.path.join(im_dir, im_path + '.jpg'))
     idx += 1
@@ -52,8 +52,8 @@ for annotation in annotations:
 
     neg_num = 0
     #1---->50
-    # keep crop random parts, until have 50 negative examples
-    # get 50 negative sample from every image
+    # keep crop random parts, until have 50 negative examples   随机裁剪，直到 50个负样本
+    # get 50 negative sample from every image   从每张图得到 50 个负样本
     while neg_num < 50:
         #neg_num's size [40,min(width, height) / 2],min_size:40
         # size is a random number between 12 and min(width,height)
@@ -63,7 +63,7 @@ for annotation in annotations:
         ny = npr.randint(0, height - size)
         #random crop
         crop_box = np.array([nx, ny, nx + size, ny + size])
-        #calculate iou
+        #calculate iou      计算覆盖度
         Iou = IoU(crop_box, boxes)
 
         #crop a part from inital image
@@ -75,13 +75,13 @@ for annotation in annotations:
         if np.max(Iou) < 0.3:
             # Iou with all gts must below 0.3
             save_file = os.path.join(neg_save_dir, "%s.jpg"%n_idx)
-            f2.write("../../DATA/12/negative/%s.jpg"%n_idx + ' 0\n')
+            f2.write("../../DATA/12/negative/%s.jpg"%n_idx + ' 0\n')    # 记录在文件里
             cv2.imwrite(save_file, resized_im)
             n_idx += 1
             neg_num += 1
 
 
-    #for every bounding boxes
+    #for every bounding boxes       处理标记的数据
     for box in boxes:
         # box (x_left, y_top, x_right, y_bottom)
         x1, y1, x2, y2 = box
@@ -91,16 +91,17 @@ for annotation in annotations:
         h = y2 - y1 + 1
 
 
-        # ignore small faces and those faces has left-top corner out of the image
+        # ignore small faces and those faces has left-top corner out of the image  忽略小面孔，这些面孔具有左上角的图像
         # in case the ground truth boxes of small faces are not accurate
         if max(w, h) < 20 or x1 < 0 or y1 < 0:
             continue
 
         # crop another 5 images near the bounding box if IoU less than 0.5, save as negative samples
+        # 如果 IoU 小于0.5 ，在标记附近截取 5个图像，作为 负样本
         for i in range(5):
             #size of the image to be cropped
             size = npr.randint(12, min(width, height) / 2)
-            # delta_x and delta_y are offsets of (x1, y1)
+            # delta_x and delta_y are offsets of (x1, y1)       坐标的平移
             # max can make sure if the delta is a negative number , x1+delta_x >0
             # parameter high of randint make sure there will be intersection between bbox and cropped_box
             delta_x = npr.randint(max(-size, -x1), w)
@@ -127,10 +128,10 @@ for annotation in annotations:
 
 
         #generate positive examples and part faces
-
+        # 正样本和部分脸
 
         for i in range(20):
-            # pos and part face size [minsize*0.8,maxsize*1.25]
+            # pos and part face size [minsize*0.8,maxsize*1.25]  图像的大小
             size = npr.randint(int(min(w, h) * 0.8), np.ceil(1.25 * max(w, h)))
 
             # delta here is the offset of box center
