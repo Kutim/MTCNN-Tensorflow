@@ -7,7 +7,7 @@ import numpy.random as npr
 from prepare_data.utils import IoU
 
 anno_file = "wider_face_train.txt"
-im_dir = "WIDER_train/images"          # 方便所有数据都放在 prepare_data 下面
+im_dir = "../../DATA/WIDER_train/images"    # 数据都放在 DATA 下面
 pos_save_dir = "../../DATA/12/positive"
 part_save_dir = "../../DATA/12/part"
 neg_save_dir = '../../DATA/12/negative'
