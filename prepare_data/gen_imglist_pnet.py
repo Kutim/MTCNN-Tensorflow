@@ -39,7 +39,7 @@ with open(os.path.join(dir_path, "%s" %(net),"train_%s_landmark.txt" % (net)), "
     print(len(neg), len(pos), len(part), base_num)
 
     #shuffle the order of the initial data
-    #if negative examples are more than 750k then only choose 750k
+    #if negative examples are more than 750k then only choose 750k  最多750K 的负样本
     if len(neg) > base_num * 3:
         neg_keep = npr.choice(len(neg), size=base_num * 3, replace=True)
     else:
