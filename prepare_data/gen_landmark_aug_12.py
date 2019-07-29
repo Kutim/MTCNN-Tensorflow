@@ -39,7 +39,7 @@ def GenerateData(ftxt,data_path,net,argument=False):
     f = open(join(OUTPUT,"landmark_%s_aug.txt" %(size)),'w')
     #dstdir = "train_landmark_few"
     # get image path , bounding box, and landmarks from file 'ftxt'
-    data = getDataFromTxt(ftxt,data_path=data_path)
+    data = getDataFromTxt(ftxt,data_path=data_path)     # 图片路径，框-4，标注-（5，2）
     idx = 0
     #image_path bbox landmark(5*2)
     for (imgPath, bbox, landmarkGt) in data:
@@ -52,15 +52,15 @@ def GenerateData(ftxt,data_path,net,argument=False):
         assert(img is not None)
         img_h,img_w,img_c = img.shape
         gt_box = np.array([bbox.left,bbox.top,bbox.right,bbox.bottom])
-        #get sub-image from bbox
+        #get sub-image from bbox        得到框出来的图
         f_face = img[bbox.top:bbox.bottom+1,bbox.left:bbox.right+1]
-        # resize the gt image to specified size
+        # resize the gt image to specified size     将大小调整指定的尺寸
         f_face = cv2.resize(f_face,(size,size))
         #initialize the landmark
         landmark = np.zeros((5, 2))
 
         #normalize land mark by dividing the width and height of the ground truth bounding box
-        # landmakrGt is a list of tuples
+        # landmakrGt is a list of tuples    对标注进行归一化（除以框）
         for index, one in enumerate(landmarkGt):
             # (( x - bbox.left)/ width of bounding box, (y - bbox.top)/ height of bounding box
             rv = ((one[0]-gt_box[0])/(gt_box[2]-gt_box[0]), (one[1]-gt_box[1])/(gt_box[3]-gt_box[1]))
@@ -70,7 +70,7 @@ def GenerateData(ftxt,data_path,net,argument=False):
         F_imgs.append(f_face)
         F_landmarks.append(landmark.reshape(10))
         landmark = np.zeros((5, 2))        
-        if argument:
+        if argument:        # 数据集扩展
             idx = idx + 1
             if idx % 100 == 0:
                 print(idx, "images done")
@@ -79,11 +79,11 @@ def GenerateData(ftxt,data_path,net,argument=False):
             gt_w = x2 - x1 + 1
             #gt's height
             gt_h = y2 - y1 + 1        
-            if max(gt_w, gt_h) < 40 or x1 < 0 or y1 < 0:
+            if max(gt_w, gt_h) < 40 or x1 < 0 or y1 < 0:    # 框的大小限制
                 continue
             #random shift
             for i in range(10):
-                bbox_size = npr.randint(int(min(gt_w, gt_h) * 0.8), np.ceil(1.25 * max(gt_w, gt_h)))
+                bbox_size = npr.randint(int(min(gt_w, gt_h) * 0.8), np.ceil(1.25 * max(gt_w, gt_h)))    # 框的大小
                 delta_x = npr.randint(-gt_w * 0.2, gt_w * 0.2)
                 delta_y = npr.randint(-gt_h * 0.2, gt_h * 0.2)
                 nx1 = int(max(x1+gt_w/2-bbox_size/2+delta_x,0))
