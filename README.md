@@ -44,6 +44,10 @@ get into `train_models ` ,train **PNet**
 
 ---
 7. After training **PNet**, run `gen_hard_example` to generate training data(Face Detection Part) for **RNet**.
+ ```
+ # 注意运行时参数
+ $ python gen_hard_example.py --test_mode=PNet --epoch=20 --prefix=../data/MTCNN_model/PNet_landmark/PNet
+ ```
 8. Run `gen_landmark_aug_24.py` to generate training data(Face Landmark Detection Part) for **RNet**.
 9. Run `gen_imglist_rnet.py` to merge two parts of training data.
 10. Run `gen_RNet_tfrecords.py` to generate tfrecords for **RNet**.(**you should run this script four times to generate tfrecords of neg,pos,part and landmark respectively**)
