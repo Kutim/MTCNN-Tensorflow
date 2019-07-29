@@ -91,7 +91,7 @@ for annotation in annotations:
         h = y2 - y1 + 1
 
 
-        # ignore small faces and those faces has left-top corner out of the image  忽略小面孔，这些面孔具有左上角的图像
+        # ignore small faces and those faces has left-top corner out of the image  忽略小面孔（小于 20 * 20） ，以及超出图像左上角的脸
         # in case the ground truth boxes of small faces are not accurate
         if max(w, h) < 20 or x1 < 0 or y1 < 0:
             continue
