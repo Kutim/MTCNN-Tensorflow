@@ -8,11 +8,11 @@ This work is used for reproduce MTCNN,a Joint Face Detection and Alignment using
 ## Dependencies
 * easydict
 * pillow
-* Tensorflow 1.2.1
+* tensorflow-gpu 1.14.0
 * TF-Slim
-* Python 2.7
-* Ubuntu 16.04
-* Cuda 8.0
+* 
+* Ubuntu 18.04
+* Cuda 10.0
 
 ## Prepare For Training Data
 ```
@@ -35,7 +35,7 @@ DATA/
 └── WIDER_train.zip
 ```
 ---
-3. Run `prepare_data/gen_12net_data.py` to generate training data(Face Detection Part) for **PNet**.
+3. Run `gen_12net_data.py` to generate training data(Face Detection Part) for **PNet**.
 4. Run `gen_landmark_aug_12.py` to generate training data(Face Landmark Detection Part) for **PNet**.
 5. Run `gen_imglist_pnet.py` to merge two parts of training data.
 6. Run `gen_PNet_tfrecords.py` to generate tfrecord for **PNet**.
