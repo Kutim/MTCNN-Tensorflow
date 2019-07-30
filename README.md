@@ -16,6 +16,7 @@ This work is used for reproduce MTCNN,a Joint Face Detection and Alignment using
 
 ## Prepare For Training Data
 ```
+$ cd MTCNN-Tensorflow
 $ export PYTHONPATH=`pwd`
 ```
 
